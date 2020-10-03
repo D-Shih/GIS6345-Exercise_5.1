@@ -1,0 +1,41 @@
+# Exercise 5.1
+
+import time
+
+t=time.time()
+difference_from_UTC = -4
+
+sec_per_minute = 60
+sec_per_hour = 60 * sec_per_minute
+sec_per_day = 24 * sec_per_hour
+
+def find_number_of_time_units (t, u):
+        if t >= u:
+                number_of_units = t//u
+                remainder = t - (number_of_units * u)
+        return number_of_units, remainder
+
+def convert_to_12_hour_time(h):
+        if h + difference_from_UTC >= 12:
+                hour = (h + difference_from_UTC) - 12
+                am_or_pm = "p.m."
+                if hour == 0:
+                        hour = 12
+        else:
+                hour = h + difference_from_UTC
+                am_or_pm = "a.m."
+                if hour == 0:
+                        hour = 12
+        return hour, am_or_pm
+
+
+
+num_days, remainder_from_days = find_number_of_time_units(t,sec_per_day)
+num_hours, remainder_from_hours = find_number_of_time_units(remainder_from_days, sec_per_hour)
+num_minutes, remainder_from_minutes = find_number_of_time_units(remainder_from_hours, sec_per_minute)
+
+am_or_pm_hours, am_or_pm = convert_to_12_hour_time(num_hours)
+
+print("Today is " + str(int(num_days)) + " days after the Epoch of 1 January, 1970")
+print("The UTC time is: " + str(int(num_hours)) + ":" + str(int(num_minutes)) + ":" + str(int(remainder_from_minutes)))
+print("The local 12-hour-clock time is: " + str(int(am_or_pm_hours)) + ":" + str(int(num_minutes)) + ":" + str(int(remainder_from_minutes)) + " " + str(am_or_pm))
